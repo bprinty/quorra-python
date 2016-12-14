@@ -29,8 +29,8 @@ test_requirements = [
 
 # files
 # -----
-with open('README.rst') as readme_file:
-    readme = readme_file.read()
+with open('README.rst') as fi:
+    readme = fi.read()
 
 
 # exec
@@ -38,23 +38,24 @@ with open('README.rst') as readme_file:
 setup(
     name='quorra',
     version=quorra.__version__,
-    description='An interactive visualization library, focused on creating reusable visualizations on top of d3.js.',
+    description='A python extension for generating quorra.js plots directly from python',
     long_description=readme,
     author='Blake Printy',
     author_email='bprinty@gmail.com',
     url='https://github.com/bprinty/quorra',
-    packages=['quorra'],
+    packages=['quorra', 'quorra.tmpl'],
+    package_data={'quorra.tmpl': '*.html'},
     package_dir={'quorra': 'quorra'},
-    entry_points={
-        'console_scripts': [
-            'quorra = quorra.__main__:main'
-        ]
-    },
+    # entry_points={
+    #     'console_scripts': [
+    #         'quorra = quorra.__main__:main'
+    #     ]
+    # },
     include_package_data=True,
     install_requires=requirements,
     license='Apache-2.0',
     zip_safe=False,
-    keywords='quorra',
+    keywords=['quorra', 'visualization', 'plotting', 'charts', 'data'],
     classifiers=[
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache-3.0 License',
