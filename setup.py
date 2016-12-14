@@ -19,7 +19,7 @@ except ImportError:
 # requirements
 # ------------
 with open('requirements.txt', 'r') as reqs:
-    requirements = reqs.rstrip().readlines()
+    requirements = reqs.readlines()
 
 test_requirements = [
     'nose',
@@ -43,8 +43,8 @@ setup(
     author='Blake Printy',
     author_email='bprinty@gmail.com',
     url='https://github.com/bprinty/quorra',
-    packages=['quorra', 'quorra.tmpl'],
-    package_data={'quorra.tmpl': '*.html'},
+    packages=['quorra'],
+    package_data={'quorra': ['tmpl/*.html']},
     package_dir={'quorra': 'quorra'},
     # entry_points={
     #     'console_scripts': [
