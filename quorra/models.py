@@ -18,12 +18,28 @@ def line():
     return Plot('line')
 
 
+def density():
+    return Plot('density')
+
+
 def scatter():
     return Plot('scatter')
 
 
 def bar():
     return Plot('bar')
+
+
+def histogram():
+    return Plot('histogram')
+
+
+def pie():
+    return Plot('pie')
+
+
+def multiline():
+    return Plot('multiline')
 
 
 # objects
