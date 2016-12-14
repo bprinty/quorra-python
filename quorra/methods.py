@@ -10,12 +10,17 @@
 # -------
 import os
 import uuid
+import webbrowser
 
 
 # config
 # ------
 _phantom = None
+_open = None
 _app = None
+__src__ = os.path.dirname(os.path.realpath(__file__))
+__cwd__ = os.getcwd()
+__templates__ = os.path.join(__src__, 'tmpl')
 
 
 # methods
@@ -28,14 +33,12 @@ def export(plot, filename):
         plot (quorra.Plot): Quorra plot object to export.
         filename (str): Filename to export to.
     """
-    global _phantom
+    global _phantom, __templates__, __cwd__
     if _phantom is None:
         from selenium.webdriver import PhantomJS
         _phantom = PhantomJS();
-    src = os.path.dirname(os.path.realpath(__file__))
-    cwd = os.getcwd()
-    tmpl = os.path.join(src, 'tmpl', 'export.html')
-    exp = os.path.join(cwd, '.' +  str(uuid.uuid1()) + '.html')
+    tmpl = os.path.join(__templates__, 'export.html')
+    exp = os.path.join(__cwd__, '.' +  str(uuid.uuid1()) + '.html')
     try:
         with open(tmpl, 'r') as fi, open(exp, 'w') as fo:
             fo.write(fi.read().replace('var plot = undefined;', 'var plot = {};'.format(str(plot))))
@@ -46,7 +49,7 @@ def export(plot, filename):
     return
 
 
-def render(plot, append=False, port=5000):
+def render(plot, append=False):
     """
     Update current view with new plot.
 
@@ -54,12 +57,16 @@ def render(plot, append=False, port=5000):
         plot (quorra.Plot): Quorra plot object to render.
         append (bool): Whether or not to append the plot
             to the current view.
-        port (int): The application to send the plot to.
     """
-    if _app is None:
-        from .app.app import create_app
-        from .app.settings import DevConfig
-        _app = create_app(DevConfig)
-        # run in separate process
-        # _app.run()
+    global _open, __templates__
+    if _open is None:
+        # this should change later to an actual server that
+        # waits for data and can support multiple plots at
+        # the same time
+        _open = os.path.join('/tmp/quorra-server.html')
+    tmpl = os.path.join(__templates__, 'render.html')
+    with open(tmpl, 'r') as fi, open(_open, 'w') as fo:
+        fo.write(fi.read().replace('var plot = undefined;', 'var plot = {};'.format(str(plot))))
+    webbrowser.open(_open)
     return
+
