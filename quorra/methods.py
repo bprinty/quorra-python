@@ -32,14 +32,17 @@ def export(plot, filename):
     if _phantom is None:
         from selenium.webdriver import PhantomJS
         _phantom = PhantomJS();
-    cwd = os.path.dirname(os.path.realpath(__file__))
-    tmpl = os.path.join(cwd, 'tmpl', 'export.html')
-    exp = '/tmp/' + str(uuid.uuid1()) + '.html'
-    with open(tmpl, 'r') as fi, open(exp, 'w') as fo:
-        fo.write(fi.read().replace('var plot = undefined;', 'var plot = {};'.format(str(plot))))
-    _phantom.get('file://' + exp)
-    _phantom.save_screenshot(filename.replace('.png', '') + '.png')
-    # os.remove(exp)
+    src = os.path.dirname(os.path.realpath(__file__))
+    cwd = os.getcwd()
+    tmpl = os.path.join(src, 'tmpl', 'export.html')
+    exp = os.path.join(cwd, '.' +  str(uuid.uuid1()) + '.html')
+    try:
+        with open(tmpl, 'r') as fi, open(exp, 'w') as fo:
+            fo.write(fi.read().replace('var plot = undefined;', 'var plot = {};'.format(str(plot))))
+        _phantom.get('file://' + exp)
+        _phantom.save_screenshot(filename.replace('.png', '') + '.png')
+    finally:
+        os.remove(exp)
     return
 
 
