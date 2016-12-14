@@ -25,12 +25,14 @@ __templates__ = os.path.join(__src__, 'tmpl')
 
 # methods
 # -------
-def export(plot, filename):
+def export(plot, filename, width=800, height=600):
     """
     Export plot to file.
 
     Args:
         plot (quorra.Plot): Quorra plot object to export.
+        width (int): Width for plot (pixels).
+        height (int): Height for plot (pixels).
         filename (str): Filename to export to.
     """
     global _phantom, __templates__, __cwd__
@@ -41,7 +43,11 @@ def export(plot, filename):
     exp = os.path.join(__cwd__, '.' +  str(uuid.uuid1()) + '.html')
     try:
         with open(tmpl, 'r') as fi, open(exp, 'w') as fo:
-            fo.write(fi.read().replace('var plot = undefined;', 'var plot = {};'.format(str(plot))))
+            dat = fi.read()
+            dat = dat.replace('var plot = undefined;', 'var plot = {};'.format(str(plot)))
+            dat = dat.replace('width: 800px;', 'width: {}px;'.format(width))
+            dat = dat.replace('height: 500px;', 'height: {}px;'.format(height))
+            fo.write(dat)
         _phantom.get('file://' + exp)
         _phantom.save_screenshot(filename.replace('.png', '') + '.png')
     finally:
@@ -49,12 +55,14 @@ def export(plot, filename):
     return
 
 
-def render(plot, append=False):
+def render(plot, width=800, height=600, append=False):
     """
     Update current view with new plot.
 
     Args:
         plot (quorra.Plot): Quorra plot object to render.
+        width (int): Width for plot (pixels).
+        height (int): Height for plot (pixels).
         append (bool): Whether or not to append the plot
             to the current view.
     """
@@ -66,7 +74,11 @@ def render(plot, append=False):
         _open = os.path.join('/tmp/quorra-server.html')
     tmpl = os.path.join(__templates__, 'render.html')
     with open(tmpl, 'r') as fi, open(_open, 'w') as fo:
-        fo.write(fi.read().replace('var plot = undefined;', 'var plot = {};'.format(str(plot))))
+        dat = fi.read()
+        dat = dat.replace('var plot = undefined;', 'var plot = {};'.format(str(plot)))
+        dat = dat.replace('width: 800px;', 'width: {}px;'.format(width))
+        dat = dat.replace('height: 500px;', 'height: {}px;'.format(height))
+        fo.write(dat)
     webbrowser.open(_open)
     return
 
