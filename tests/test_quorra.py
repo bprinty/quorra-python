@@ -46,7 +46,7 @@ class TestExport(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         qtime = datetime.now() - cls._time
-        if qtime.microseconds > 5000:
+        if qtime.microseconds > 500000:
             sys.stderr.write('\n\nWarning: Export tests took more than 5s to run!\n\n')
         return
 
