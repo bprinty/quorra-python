@@ -51,7 +51,8 @@ def export(plot, filename, width=800, height=600):
         _phantom.get('file://' + exp)
         _phantom.save_screenshot(filename.replace('.png', '') + '.png')
     finally:
-        os.remove(exp)
+        if os.path.exists(exp):
+            os.remove(exp)
     return
 
 
