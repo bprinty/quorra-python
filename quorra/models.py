@@ -64,7 +64,7 @@ class Plot(object):
         return ret
 
     def data(self, data, x=None, y=None, group=None, label=None):
-        if isinstance(data, pandas.DataFrame):    
+        if isinstance(data, pandas.DataFrame):
             self.attr['data'] = []
             for idx in range(0, len(data)):
                 entry = {}
@@ -82,4 +82,3 @@ class Plot(object):
         else:
             raise AssertionError('Input data must be one of type: (list, tuple, pandas.DataFrame)')
         return self
-

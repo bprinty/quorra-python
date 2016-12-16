@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Methods for interacting with quorra plots.
-# 
+#
 # @author <bprinty@gmail.com>
 # ------------------------------------------------
 
@@ -40,7 +40,7 @@ def export(plot, filename, width=800, height=600):
         from selenium.webdriver import PhantomJS
         _phantom = PhantomJS(service_log_path=os.path.devnull)
     tmpl = os.path.join(__templates__, 'export.html')
-    exp = os.path.join(__cwd__, '.' +  str(uuid.uuid1()) + '.html')
+    exp = os.path.join(__cwd__, '.' + str(uuid.uuid1()) + '.html')
     try:
         with open(tmpl, 'r') as fi, open(exp, 'w') as fo:
             dat = fi.read()
@@ -82,4 +82,3 @@ def render(plot, width=800, height=600, append=False):
         fo.write(dat)
     webbrowser.open(_open)
     return
-
