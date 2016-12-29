@@ -38,6 +38,9 @@ class TestEntryPoints(unittest.TestCase):
 
 class TestExport(unittest.TestCase):
 
+    def call(self, cmd, *args):
+        return subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True, cwd=__base__)
+
     @classmethod
     def setUpClass(cls):
         cls._time = datetime.now()
@@ -81,6 +84,16 @@ class TestExport(unittest.TestCase):
         quorra.export(plt, outfile)
         self.assertTrue(os.path.exists(outfile))
         os.remove(outfile)
+        return
+
+    def test_phantomjs_quit(self):
+        try:
+            self.call('ps aux | grep phantomjs | grep -v grep')
+            self.assertTrue(False)
+        
+        # if there are no results, a called process error is thrown
+        except subprocess.CalledProcessError:
+            self.assertTrue(True)
         return
 
 

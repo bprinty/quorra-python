@@ -11,11 +11,12 @@
 import os
 import uuid
 import webbrowser
+from selenium.webdriver import PhantomJS
+import signal
 
 
 # config
 # ------
-_phantom = None
 _open = None
 _app = None
 __src__ = os.path.dirname(os.path.realpath(__file__))
@@ -35,10 +36,8 @@ def export(plot, filename, width=800, height=600):
         height (int): Height for plot (pixels).
         filename (str): Filename to export to.
     """
-    global _phantom, __templates__, __cwd__
-    if _phantom is None:
-        from selenium.webdriver import PhantomJS
-        _phantom = PhantomJS(service_log_path=os.path.devnull)
+    global __templates__, __cwd__
+    phantom = PhantomJS(service_log_path=os.path.devnull)
     tmpl = os.path.join(__templates__, 'export.html')
     exp = os.path.join(__cwd__, '.' + str(uuid.uuid1()) + '.html')
     try:
@@ -48,9 +47,11 @@ def export(plot, filename, width=800, height=600):
             dat = dat.replace('width: 800px;', 'width: {}px;'.format(width))
             dat = dat.replace('height: 500px;', 'height: {}px;'.format(height))
             fo.write(dat)
-        _phantom.get('file://' + exp)
-        _phantom.save_screenshot(filename.replace('.png', '') + '.png')
+        phantom.get('file://' + exp)
+        phantom.save_screenshot(filename.replace('.png', '') + '.png')
     finally:
+        phantom.service.process.send_signal(signal.SIGTERM)
+        phantom.quit()
         if os.path.exists(exp):
             os.remove(exp)
     return
