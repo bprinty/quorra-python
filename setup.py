@@ -43,9 +43,9 @@ setup(
     author='Blake Printy',
     author_email='bprinty@gmail.com',
     url='https://github.com/bprinty/quorra',
-    packages=['quorra'],
-    package_data={'quorra': ['tmpl/*.html']},
     package_dir={'quorra': 'quorra'},
+    packages=['quorra', 'quorra.tmpl'],
+    package_data={'quorra.tmpl': ['*.html']},
     # entry_points={
     #     'console_scripts': [
     #         'quorra = quorra.__main__:main'
