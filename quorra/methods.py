@@ -9,10 +9,6 @@
 # imports
 # -------
 import os
-import uuid
-import webbrowser
-from selenium.webdriver import PhantomJS
-import signal
 
 
 # config
@@ -36,6 +32,9 @@ def export(plot, filename, width=800, height=600):
         height (int): Height for plot (pixels).
         filename (str): Filename to export to.
     """
+    import signal
+    import uuid
+    from selenium.webdriver import PhantomJS
     global __templates__, __cwd__
     phantom = PhantomJS(service_log_path=os.path.devnull)
     tmpl = os.path.join(__templates__, 'export.html')
@@ -68,6 +67,7 @@ def render(plot, width=800, height=600, append=False):
         append (bool): Whether or not to append the plot
             to the current view.
     """
+    import webbrowser
     global _open, __templates__
     if _open is None:
         # this should change later to an actual server that

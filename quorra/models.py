@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Methods for generating quorra plot models.
-# 
+#
 # @author <bprinty@gmail.com>
 # ------------------------------------------------
 
